@@ -5,7 +5,7 @@ function Player(context, initLives, initHealth, initSpells, spriteID, bulletType
     this.curHealth = this.maxHealth;
     this.curSpells = initSpells;
     this.isFocused = false;
-    this.isInvince = false;
+    this.isInvince = true;
     this.spriteID = spriteID;
     this.phaserObject = null;
     this.controls = null;
@@ -125,6 +125,7 @@ Player.prototype.movement = function(){
 
 Player.prototype.shoot = function(){
     if(!this.isCooldown){
+        this.game.sfx_attack.play();
         this.toggleCooldown();
         if(this.bulletTypes[this.bulletTypes.curBulletType].bulletType === "shot_basic"){
             var newBullet = new Bullet(this.game, this.phaserObject.x, this.phaserObject.y, this.bulletTypes[this.bulletTypes.curBulletType].bulletType, 0, 0);
@@ -202,6 +203,7 @@ Player.prototype.useBomb = function(){
     console.log("ENEMY BULLETS:" + this.game.phaserGroup_EnemyBullets.children.entries.length);
     console.log("POW ITEM:" + this.game.phaserGroup_PowerUp.children.entries.length);
     if(!this.bombCooldown && this.game.gameUI.bombs.curLives > 0){
+        this.game.sfx_bomb.play();
         this.game.screenFilter.play('activeBomb');
         this.bombCooldown = true;
         this.game.gameUI.bombs.changeLifeAmount(-1);
@@ -225,6 +227,7 @@ Player.prototype.useBomb = function(){
 
 Player.prototype.hit = function(bulletObj, playerObj, gameOver = false){
     if(!playerObj.object.isInvince && !gameOver){
+        this.game.sfx_death.play();
         playerObj.object.toggleInvince();
         playerObj.object.phaserObject.alpha = 0.5;
         this.pause = true;

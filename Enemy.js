@@ -44,6 +44,7 @@ Enemy.prototype.toggleInvince = function(){
 
 Enemy.prototype.attack=function(){
     if(!this.isCooldown){
+        this.game.sfx_enemyAttack.play();
         this.toggleCooldown();
         var newBullet = new Bullet(this.game, this.phaserObject.x, this.phaserObject.y, 'shot_enemyBasic');
         newBullet.create(this.phaserGroup_Bullets, Math.floor((Math.random() * 180) - 90), 450);
@@ -76,6 +77,7 @@ Enemy.prototype.damage= function(dmg){
 }
 
 Enemy.prototype.die=function(){
+    this.game.sfx_enemyDeath.play();
     setTimeout(() => {
         this.phaserObject.alpha = 0.25;
         this.dropPower();

@@ -3,6 +3,11 @@ function GameMaterials(context){
     this.player = null;
     this.gameUI;
     
+    this.game.load.audio('SFX_attack', 'assets/audio/sfx/Attack.wav');
+    this.game.load.audio('SFX_bomb', 'assets/audio/sfx/Bomb.wav');
+    this.game.load.audio('SFX_death', 'assets/audio/sfx/Death.wav');
+    this.game.load.audio('SFX_enemyAttack', 'assets/audio/sfx/EnemyAttack.wav');
+    this.game.load.audio('SFX_enemyDeath', 'assets/audio/sfx/EnemyDeath.wav');
     this.game.load.image('bd_Debug', 'assets/stage/backdrop/stage_Debug.png');
     this.game.load.image('bd_lay1', 'assets/stage/backdrop/stage_Layer1.png');
     this.game.load.image('bd_lay2', 'assets/stage/backdrop/stage_Layer2.png');
@@ -14,6 +19,8 @@ function GameMaterials(context){
     this.game.load.spritesheet('icon_spell', 'assets/ui/icon_spell.png', {frameWidth: 40, frameHeight: 40});
     this.game.load.spritesheet('playerChar', 'assets/sprites/player/player.png', {frameWidth: 16, frameHeight: 34});
     this.game.load.spritesheet('enemyChar', 'assets/sprites/enemy/enemyChar.png', {frameWidth: 38, frameHeight: 48});
+    this.game.load.spritesheet('enemyCharB', 'assets/sprites/enemy/enemyCharB.png', {frameWidth: 38, frameHeight: 48});
+    this.game.load.spritesheet('enemyCharB', 'assets/sprites/enemy/enemyCharC.png', {frameWidth: 38, frameHeight: 48});
     this.game.load.spritesheet('shot_basic', 'assets/sprites/bullets/basicShot.png', {frameWidth: 10, frameHeight: 10});
     this.game.load.spritesheet('shot_pierce', 'assets/sprites/bullets/pierceShot.png', {frameWidth: 10, frameHeight: 10});
     this.game.load.spritesheet('shot_slice', 'assets/sprites/bullets/sliceShot.png', {frameWidth: 10, frameHeight: 10});
@@ -45,6 +52,12 @@ GameMaterials.prototype.setup_Game = function(){
     this.game.phaserGroup_StageBorder = this.game.physics.add.staticGroup();
     this.game.screenFilter;
     this.animComp = new AnimationCompendium(this.game);
+    
+    this.game.sfx_attack = this.game.sound.add('SFX_attack');
+    this.game.sfx_bomb = this.game.sound.add('SFX_bomb');
+    this.game.sfx_death = this.game.sound.add('SFX_death');
+    this.game.sfx_enemyAttack = this.game.sound.add('SFX_enemyAttack');
+    this.game.sfx_enemyDeath = this.game.sound.add('SFX_enemyDeath');
     
     this.gameOver = false;
     this.gameOverFilter = this.game.add.image(360, 454, "gameOver");
