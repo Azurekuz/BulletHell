@@ -5,7 +5,7 @@ function Player(context, initLives, initHealth, initSpells, spriteID, bulletType
     this.curHealth = this.maxHealth;
     this.curSpells = initSpells;
     this.isFocused = false;
-    this.isInvince = true;
+    this.isInvince = false;
     this.spriteID = spriteID;
     this.phaserObject = null;
     this.controls = null;
