@@ -34,6 +34,20 @@ function AnimationCompendium(context){
     });
     
     this.game.anims.create({
+        key: 'expire_shot_enemyMed',
+        frames: this.game.anims.generateFrameNumbers('shot_enemyMed', {start: 0, end: 2}),
+        frameRate: 3,
+        repeat: 0
+    });
+    
+    this.game.anims.create({
+        key: 'expire_shot_enemySml',
+        frames: this.game.anims.generateFrameNumbers('shot_enemySml', {start: 0, end: 2}),
+        frameRate: 3,
+        repeat: 0
+    });
+    
+    this.game.anims.create({
         key: 'activeBomb',
         frames: this.game.anims.generateFrameNumbers('bombFilter', {start: 0, end: 8}),
         frameRate: 27,

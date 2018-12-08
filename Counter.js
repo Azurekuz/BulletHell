@@ -19,8 +19,7 @@ Counter.prototype.setup = function(){
 }
 
 Counter.prototype.updateDisplay = function(){
-    console.log(this.iconArray.length);
-    console.log("Lives: " + this.curLives.toString());
+    
 }
 
 Counter.prototype.changeLifeAmount = function(amount){

@@ -64,10 +64,8 @@ Player.prototype.setup_Controls = function(){
 Player.prototype.update = function(){
     this.movement();
     if(Phaser.Input.Keyboard.JustDown(this.controls.focusShot)){
-        console.log("Focused!");
         this.toggleFocus();   
     }else if(this.isFocused && !this.controls.focusShot.isDown){
-        console.log("Unfocused!");
         this.toggleFocus();
     }
     if(this.controls.isShooting()){
@@ -131,28 +129,34 @@ Player.prototype.shoot = function(){
             var newBullet = new Bullet(this.game, this.phaserObject.x, this.phaserObject.y, this.bulletTypes[this.bulletTypes.curBulletType].bulletType, 0, 0);
             newBullet.create(this.phaserGroup_Bullets);
             newBullet.phaserObject.depth = 0;
+            newBullet.phaserObject.alpha = 0.85;
             this.game.phaserGroup_PlayerBullets.add(newBullet.phaserObject);
         }else if(this.bulletTypes[this.bulletTypes.curBulletType].bulletType === "shot_pierce"){
             var newBullet = new Bullet(this.game, this.phaserObject.x, this.phaserObject.y, this.bulletTypes[this.bulletTypes.curBulletType].bulletType, -10, 0);
             newBullet.create(this.phaserGroup_Bullets);
             newBullet.phaserObject.depth = 0;
+            newBullet.phaserObject.alpha = 0.85;
             this.game.phaserGroup_PlayerBullets.add(newBullet.phaserObject);
             var newBullet = new Bullet(this.game, this.phaserObject.x, this.phaserObject.y, this.bulletTypes[this.bulletTypes.curBulletType].bulletType, 10, 0);
             newBullet.create(this.phaserGroup_Bullets);
             newBullet.phaserObject.depth = 0;
+            newBullet.phaserObject.alpha = 0.85;
             this.game.phaserGroup_PlayerBullets.add(newBullet.phaserObject);
         }else if(this.bulletTypes[this.bulletTypes.curBulletType].bulletType === "shot_slice"){
             var newBullet = new Bullet(this.game, this.phaserObject.x, this.phaserObject.y, this.bulletTypes[this.bulletTypes.curBulletType].bulletType);
             newBullet.create(this.phaserGroup_Bullets, -50);
             newBullet.phaserObject.depth = 0;
+            newBullet.phaserObject.alpha = 0.85;
             this.game.phaserGroup_PlayerBullets.add(newBullet.phaserObject);
             var newBullet = new Bullet(this.game, this.phaserObject.x, this.phaserObject.y, this.bulletTypes[this.bulletTypes.curBulletType].bulletType);
             newBullet.create(this.phaserGroup_Bullets);
             newBullet.phaserObject.depth = 0;
+            newBullet.phaserObject.alpha = 0.85;
             this.game.phaserGroup_PlayerBullets.add(newBullet.phaserObject);
             var newBullet = new Bullet(this.game, this.phaserObject.x, this.phaserObject.y, this.bulletTypes[this.bulletTypes.curBulletType].bulletType);
             newBullet.create(this.phaserGroup_Bullets, 50);
             newBullet.phaserObject.depth = 0;
+            newBullet.phaserObject.alpha = 0.85;
             this.game.phaserGroup_PlayerBullets.add(newBullet.phaserObject);
         }
         /*var newBullet = new Bullet(this.game, this.phaserObject.x, this.phaserObject.y, this.bulletTypes[this.bulletTypes.curBulletType].bulletType);
@@ -169,7 +173,6 @@ Player.prototype.toggleFocus = function(){
     this.isFocused = !this.isFocused;
     if(this.isFocused){
         this.phaserObject_hitbox.alpha = 1;
-        console.log(this.game.phaserGroup_EnemyBullets);
     }else{
         this.phaserObject_hitbox.alpha = 0;
     }
@@ -199,9 +202,6 @@ Player.prototype.switchShot = function(direction){
 }
 
 Player.prototype.useBomb = function(){
-    console.log("PLAYER BULLETS:" + this.game.phaserGroup_PlayerBullets.children.entries.length);
-    console.log("ENEMY BULLETS:" + this.game.phaserGroup_EnemyBullets.children.entries.length);
-    console.log("POW ITEM:" + this.game.phaserGroup_PowerUp.children.entries.length);
     if(!this.bombCooldown && this.game.gameUI.bombs.curLives > 0){
         this.game.sfx_bomb.play();
         this.game.screenFilter.play('activeBomb');
@@ -246,7 +246,6 @@ Player.prototype.hit = function(bulletObj, playerObj, gameOver = false){
         this.bulletTypes[this.bulletTypes.curBulletType].typePower = Math.floor(this.bulletTypes[this.bulletTypes.curBulletType].typePower/2);
         this.game.gameUI.power.updatePower(this.bulletTypes[this.bulletTypes.curBulletType].typePower);
         this.game.gameUI.bombs.resetLife();
-        console.log("Player Hit!");
         setTimeout(() => {
             playerObj.object.toggleInvince();
             playerObj.object.phaserObject.alpha = 1;

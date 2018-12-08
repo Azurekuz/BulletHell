@@ -8,6 +8,8 @@ function GameMaterials(context){
     this.game.load.audio('SFX_death', 'assets/audio/sfx/Death.wav');
     this.game.load.audio('SFX_enemyAttack', 'assets/audio/sfx/EnemyAttack.wav');
     this.game.load.audio('SFX_enemyDeath', 'assets/audio/sfx/EnemyDeath.wav');
+     this.game.load.audio('SFX_lifeUp', 'assets/audio/sfx/LifeUp.wav');
+     this.game.load.audio('SFX_powUp', 'assets/audio/sfx/PowPickUp.wav');
     this.game.load.image('bd_Debug', 'assets/stage/backdrop/stage_Debug.png');
     this.game.load.image('bd_lay1', 'assets/stage/backdrop/stage_Layer1.png');
     this.game.load.image('bd_lay2', 'assets/stage/backdrop/stage_Layer2.png');
@@ -20,11 +22,13 @@ function GameMaterials(context){
     this.game.load.spritesheet('playerChar', 'assets/sprites/player/player.png', {frameWidth: 16, frameHeight: 34});
     this.game.load.spritesheet('enemyChar', 'assets/sprites/enemy/enemyChar.png', {frameWidth: 38, frameHeight: 48});
     this.game.load.spritesheet('enemyCharB', 'assets/sprites/enemy/enemyCharB.png', {frameWidth: 38, frameHeight: 48});
-    this.game.load.spritesheet('enemyCharB', 'assets/sprites/enemy/enemyCharC.png', {frameWidth: 38, frameHeight: 48});
+    this.game.load.spritesheet('enemyCharC', 'assets/sprites/enemy/enemyCharC.png', {frameWidth: 38, frameHeight: 48});
     this.game.load.spritesheet('shot_basic', 'assets/sprites/bullets/basicShot.png', {frameWidth: 10, frameHeight: 10});
     this.game.load.spritesheet('shot_pierce', 'assets/sprites/bullets/pierceShot.png', {frameWidth: 10, frameHeight: 10});
     this.game.load.spritesheet('shot_slice', 'assets/sprites/bullets/sliceShot.png', {frameWidth: 10, frameHeight: 10});
     this.game.load.spritesheet('shot_enemyBasic', 'assets/sprites/bullets/enemy_Basic.png', {frameWidth: 38, frameHeight: 38});
+    this.game.load.spritesheet('shot_enemyMed', 'assets/sprites/bullets/enemy_Medium.png', {frameWidth: 19, frameHeight: 19});
+    this.game.load.spritesheet('shot_enemySml', 'assets/sprites/bullets/enemy_Small.png', {frameWidth: 10, frameHeight: 10});
     this.game.load.spritesheet('hitbox', 'assets/sprites/player/hitbox.png', {frameWidth: 10, frameHeight: 10});
     this.game.load.image('UI_Back', 'assets/ui/UI_Background.png');
     this.game.load.spritesheet('bombFilter', 'assets/ui/BombFilter.png', {frameWidth: 686, frameHeight: 868});
@@ -40,9 +44,9 @@ GameMaterials.prototype.setup_Game = function(){
     this.bulletTypeArray.push(new Bullet(this.game, 0, 0, 'shot_pierce'));
     this.bulletTypeArray.push(new Bullet(this.game, 0, 0, 'shot_slice'));
     
-    this.bulletTypeArray[0].baseDamage = 5;
+    this.bulletTypeArray[0].baseDamage = 10;
     this.bulletTypeArray[1].baseDamage = 20;
-    this.bulletTypeArray[2].baseDamage = 10;
+    this.bulletTypeArray[2].baseDamage = 5;
     
     this.player = new Player(this.game, 3, 10, 3, 'playerChar', this.bulletTypeArray);
     this.game.phaserGroup_EnemyBullets = this.game.add.group();
@@ -58,6 +62,8 @@ GameMaterials.prototype.setup_Game = function(){
     this.game.sfx_death = this.game.sound.add('SFX_death');
     this.game.sfx_enemyAttack = this.game.sound.add('SFX_enemyAttack');
     this.game.sfx_enemyDeath = this.game.sound.add('SFX_enemyDeath');
+    this.game.sfx_powUp = this.game.sound.add('SFX_powUp');
+    this.game.sfx_lifeUp= this.game.sound.add('SFX_lifeUp');
     
     this.gameOver = false;
     this.gameOverFilter = this.game.add.image(360, 454, "gameOver");
@@ -92,13 +98,14 @@ GameMaterials.prototype.update_Stage01 = function(){
               this.gameOverText = this.game.add.text(200, 200, 'Game Over', { font: '96px Agency FB', align: 'center', color: '#E82C0C'});
                this.gameOverText.depth = 1;
                this.gameOverText.alpha = 0;
-            }else if(this.gameOverText.alpha != 1){
+            }else if(this.gameOverText.alpha < 0.95){
                 this.gameOverText.alpha += 0.05;
-            }else{
+            }else if(this.gameOverText.alpha >= 0.95 && this.gameOverText.alpha < 1){
                 this.game.add.text(215, 650, 'Click to refresh the game', { font: '40px Agency FB', align: 'center', color: '#E82C0C'}).depth = 1;
                 this.game.input.once('pointerup', function (event) {
                     location.reload(); 
                 }, this);
+                this.gameOverText.alpha = 1;
             } 
         }        
     }
@@ -164,7 +171,8 @@ GameMaterials.prototype.setup_Audio = function(){
 }
 
 GameMaterials.prototype.powerUp= function(powItem, player){
-   if(this.player.bulletTypes[this.player.bulletTypes.curBulletType].typePower < 120){              this.player.bulletTypes[this.player.bulletTypes.curBulletType].typePower += 1;
+   this.game.sfx_powUp.play();
+    if(this.player.bulletTypes[this.player.bulletTypes.curBulletType].typePower < 120){     this.player.bulletTypes[this.player.bulletTypes.curBulletType].typePower += 1;
     }
     this.game.gameUI.power.updatePower(this.player.bulletTypes[this.player.bulletTypes.curBulletType].typePower);
     powItem.destroy();

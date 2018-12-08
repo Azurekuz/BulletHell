@@ -32,18 +32,18 @@ Stage_01.prototype.setup = function(){
     this.bd_layer5 = this.game.add.image(360, -1606, "bd_lay5");
     this.bd_layer5.depth = -5;
     //this.setup_Border();
-    var newEnemy = new Enemy(this.game, 150, 'enemyChar', null, null);
-    newEnemy.setup(360, 125);
+    var newEnemy = new Enemy(this.game, 150, 'enemyChar',"sideSlide", "randomForward");
+    newEnemy.setup(-16, 250, -150, 200);
     this.phaserGroup_enemies.add(newEnemy.phaserObject);
     this.enemyObjArray.push(newEnemy);
     
-    var newEnemy = new Enemy(this.game, 150, 'enemyChar', null, null);
-    newEnemy.setup(480, 250);
+    var newEnemy = new Enemy(this.game, 150, 'enemyCharB',"sideSlide", "radial", "shot_enemyMed", 500);
+    newEnemy.setup(690, 125);
     this.phaserGroup_enemies.add(newEnemy.phaserObject);
     this.enemyObjArray.push(newEnemy);
     
-    var newEnemy = new Enemy(this.game, 150, 'enemyChar', null, null);
-    newEnemy.setup(180, 375);
+    var newEnemy = new Enemy(this.game, 150, 'enemyCharC',"frenzy", "randomForward", "shot_enemySml", 150);
+    newEnemy.setup(-32, 375, 200, -150);
     this.phaserGroup_enemies.add(newEnemy.phaserObject);
     this.enemyObjArray.push(newEnemy);
     
@@ -70,18 +70,18 @@ Stage_01.prototype.update_Enemies = function(){
         }
     }
     if(this.enemyObjArray.length == 0){
-        var newEnemy = new Enemy(this.game, 150, 'enemyChar', null, null);
-        newEnemy.setup(360, 125);
+        var newEnemy = new Enemy(this.game, 150, 'enemyChar',"sideSlide", "randomForward");
+        newEnemy.setup(-16, 250, -150, 200);
         this.phaserGroup_enemies.add(newEnemy.phaserObject);
         this.enemyObjArray.push(newEnemy);
 
-        var newEnemy = new Enemy(this.game, 150, 'enemyChar', null, null);
-        newEnemy.setup(480, 250);
+        var newEnemy = new Enemy(this.game, 150, 'enemyCharB',"sideSlide", "radial", "shot_enemyMed", 500);
+        newEnemy.setup(690, 125);
         this.phaserGroup_enemies.add(newEnemy.phaserObject);
         this.enemyObjArray.push(newEnemy);
 
-        var newEnemy = new Enemy(this.game, 150, 'enemyChar', null, null);
-        newEnemy.setup(180, 375);
+        var newEnemy = new Enemy(this.game, 150, 'enemyCharC',"frenzy", "randomForward", "shot_enemySml", 150);
+        newEnemy.setup(-32, 375, 200, -150);
         this.phaserGroup_enemies.add(newEnemy.phaserObject);
         this.enemyObjArray.push(newEnemy);
     }
@@ -96,7 +96,6 @@ Stage_01.prototype.moveBackdrop = function(){
     
     if(this.bd_layer1B != null){
         this.bd_layer1B.y += 0.5*10; 
-        console.log("Move?");
     }
     if(this.bd_layer2B != null){
         this.bd_layer2B.y += 0.48*10;
@@ -121,7 +120,6 @@ Stage_01.prototype.checkLayers = function(){
         this.bd_layer1B.destroy();
         delete this.bd_layer1B;
         this.bd_layer1B = null;
-        console.log("Layer 1 destroyed");
     }
     
     if(this.bd_layer2.y >= 2520 && this.bd_layer2B == null){
@@ -132,7 +130,6 @@ Stage_01.prototype.checkLayers = function(){
         this.bd_layer2B.destroy();
         delete this.bd_layer2B;
         this.bd_layer2B = null;
-        console.log("Layer 2 destroyed");
     }
     
     if(this.bd_layer3.y >= 2520 && this.bd_layer3B == null){
@@ -143,7 +140,6 @@ Stage_01.prototype.checkLayers = function(){
         this.bd_layer3B.destroy();
         delete this.bd_layer3B;
         this.bd_layer3B = null;
-        console.log("Layer 3 destroyed");
     }
     
     if(this.bd_layer4.y >= 2520 && this.bd_layer4B == null){
@@ -154,7 +150,6 @@ Stage_01.prototype.checkLayers = function(){
         this.bd_layer4B.destroy();
         delete this.bd_layer4B;
         this.bd_layer4B = null;
-        console.log("Layer 4 destroyed");
     }
     
     if(this.bd_layer5.y >= 2520 && this.bd_layer5B == null){
@@ -165,7 +160,6 @@ Stage_01.prototype.checkLayers = function(){
         this.bd_layer5B.destroy();
         delete this.bd_layer5B;
         this.bd_layer5B = null;
-        console.log("Layer 5 destroyed");
     }
       
 }

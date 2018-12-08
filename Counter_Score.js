@@ -30,5 +30,6 @@ Counter_Score.prototype.checkNext = function(){
         this.nextLife = this.nextLife * 2;
         this.curNext = -(this.curNext) + this.nextLife;
         this.game.gameUI.lives.changeLifeAmount(1);
+        this.game.sfx_lifeUp.play();
     }
 }
