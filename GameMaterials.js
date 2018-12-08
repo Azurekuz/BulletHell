@@ -23,6 +23,7 @@ function GameMaterials(context){
     this.game.load.spritesheet('enemyChar', 'assets/sprites/enemy/enemyChar.png', {frameWidth: 38, frameHeight: 48});
     this.game.load.spritesheet('enemyCharB', 'assets/sprites/enemy/enemyCharB.png', {frameWidth: 38, frameHeight: 48});
     this.game.load.spritesheet('enemyCharC', 'assets/sprites/enemy/enemyCharC.png', {frameWidth: 38, frameHeight: 48});
+    this.game.load.spritesheet('boss01', 'assets/sprites/enemy/boss01Char.png', {frameWidth: 204, frameHeight: 162});
     this.game.load.spritesheet('shot_basic', 'assets/sprites/bullets/basicShot.png', {frameWidth: 10, frameHeight: 10});
     this.game.load.spritesheet('shot_pierce', 'assets/sprites/bullets/pierceShot.png', {frameWidth: 10, frameHeight: 10});
     this.game.load.spritesheet('shot_slice', 'assets/sprites/bullets/sliceShot.png', {frameWidth: 10, frameHeight: 10});
@@ -65,6 +66,8 @@ GameMaterials.prototype.setup_Game = function(){
     this.game.sfx_powUp = this.game.sound.add('SFX_powUp');
     this.game.sfx_lifeUp= this.game.sound.add('SFX_lifeUp');
     
+    this.stage01;
+    
     this.gameOver = false;
     this.gameOverFilter = this.game.add.image(360, 454, "gameOver");
     this.gameOverFilter.depth = 1;
@@ -85,7 +88,7 @@ GameMaterials.prototype.setup_Stage01 = function(){
 }
 
 GameMaterials.prototype.update_Stage01 = function(){
-    if(!this.gameOver){
+    if(!this.gameOver && !this.stage01.isComplete){
         this.player.update();
         this.stage01.update();
         this.check_Collisions();
@@ -108,6 +111,24 @@ GameMaterials.prototype.update_Stage01 = function(){
                 this.gameOverText.alpha = 1;
             } 
         }        
+    }else if(this.stage01.isComplete){
+        if(this.gameOverFilter.alpha != 1){
+            this.gameOverFilter.alpha += 0.01;
+        }  else{
+            if(this.gameOverText == undefined || this.gameOverText == null){
+              this.gameOverText = this.game.add.text(175, 200, 'Stage 01 Clear', { font: '96px Agency FB', align: 'center', color: '#E8E070'});
+               this.gameOverText.depth = 1;
+               this.gameOverText.alpha = 0;
+            }else if(this.gameOverText.alpha < 0.95){
+                this.gameOverText.alpha += 0.05;
+            }else if(this.gameOverText.alpha >= 0.95 && this.gameOverText.alpha < 1){
+                this.game.add.text(215, 650, 'Click to refresh the game', { font: '40px Agency FB', align: 'center', color: '#E8E070'}).depth = 1;
+                this.game.input.once('pointerup', function (event) {
+                    location.reload(); 
+                }, this);
+                this.gameOverText.alpha = 1;
+            }
+        }   
     }
 }
 

@@ -90,7 +90,7 @@ Enemy.prototype.attack=function(){
             var xVel;
             var yVel;
             for(var i = 0; i < radialArray.length; i += 1){
-                var newBullet = new Bullet(this.game, this.phaserObject.x, this.phaserObject.y, this.bulletType, radialArray[i][0], radialArray[i][1]);
+                var newBullet = new Bullet(this.game, this.phaserObject.x, this.phaserObject.y, this.bulletType, radialArray[i][0]*0.25, radialArray[i][1]*0.25);
                 if(radialArray[i][0] < 0){
                    xVel = -250 - radialArray[i][0];
                 }else if(radialArray[i][0] > 0){

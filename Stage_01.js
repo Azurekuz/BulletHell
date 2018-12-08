@@ -2,6 +2,11 @@ function Stage_01(context, player, backgroundID, enemyArray){
     this.game = context;
     this.stageBackdropID = backgroundID;
     this.stageBackdrop;
+    this.encounterArray = [];
+    this.curEncounter = 0;
+    this.spawnNew = false;
+    this.isComplete = false;
+    
     this.bd_layer1;
     this.bd_layer2;
     this.bd_layer3;
@@ -32,7 +37,8 @@ Stage_01.prototype.setup = function(){
     this.bd_layer5 = this.game.add.image(360, -1606, "bd_lay5");
     this.bd_layer5.depth = -5;
     //this.setup_Border();
-    var newEnemy = new Enemy(this.game, 150, 'enemyChar',"sideSlide", "randomForward");
+    
+    /*var newEnemy = new Enemy(this.game, 150, 'enemyChar',"sideSlide", "randomForward");
     newEnemy.setup(-16, 250, -150, 200);
     this.phaserGroup_enemies.add(newEnemy.phaserObject);
     this.enemyObjArray.push(newEnemy);
@@ -45,7 +51,10 @@ Stage_01.prototype.setup = function(){
     var newEnemy = new Enemy(this.game, 150, 'enemyCharC',"frenzy", "randomForward", "shot_enemySml", 150);
     newEnemy.setup(-32, 375, 200, -150);
     this.phaserGroup_enemies.add(newEnemy.phaserObject);
-    this.enemyObjArray.push(newEnemy);
+    this.enemyObjArray.push(newEnemy);*/
+    
+    this.setupEncounters();
+    this.spawnEncounter();
     
     this.game.screenFilter = this.game.physics.add.sprite(360, 452, 'bombFilter');
     this.game.screenFilter.depth = 0;
@@ -70,7 +79,7 @@ Stage_01.prototype.update_Enemies = function(){
         }
     }
     if(this.enemyObjArray.length == 0){
-        var newEnemy = new Enemy(this.game, 150, 'enemyChar',"sideSlide", "randomForward");
+        /*var newEnemy = new Enemy(this.game, 150, 'enemyChar',"sideSlide", "randomForward");
         newEnemy.setup(-16, 250, -150, 200);
         this.phaserGroup_enemies.add(newEnemy.phaserObject);
         this.enemyObjArray.push(newEnemy);
@@ -83,7 +92,25 @@ Stage_01.prototype.update_Enemies = function(){
         var newEnemy = new Enemy(this.game, 150, 'enemyCharC',"frenzy", "randomForward", "shot_enemySml", 150);
         newEnemy.setup(-32, 375, 200, -150);
         this.phaserGroup_enemies.add(newEnemy.phaserObject);
+        this.enemyObjArray.push(newEnemy);*/
+        
+        this.curEncounter += 1;
+        if(this.curEncounter < this.encounterArray.length){
+           this.spawnEncounter();
+        }else{
+            this.isComplete = true;
+        }
+    }
+}
+
+Stage_01.prototype.spawnEncounter = function(){
+    for(var i = 0; i < this.encounterArray[this.curEncounter].setArray.length; i += 1){
+        var newEnemy = new Enemy(this.game, this.encounterArray[this.curEncounter].setArray[i].health, this.encounterArray[this.curEncounter].setArray[i].spriteID,this.encounterArray[this.curEncounter].setArray[i].movePattern, this.encounterArray[this.curEncounter].setArray[i].bulletPattern, this.encounterArray[this.curEncounter].setArray[i].bulletType, this.encounterArray[this.curEncounter].setArray[i].fireRate);
+        newEnemy.setup(this.encounterArray[this.curEncounter].setArray[i].initXLoc, this.encounterArray[this.curEncounter].setArray[i].initYLoc, this.encounterArray[this.curEncounter].setArray[i].xVel, this.encounterArray[this.curEncounter].setArray[i].yVel);
+        this.phaserGroup_enemies.add(newEnemy.phaserObject);
         this.enemyObjArray.push(newEnemy);
+        
+        console.log("Spawned: " + newEnemy.spriteID);
     }
 }
 
@@ -162,4 +189,109 @@ Stage_01.prototype.checkLayers = function(){
         this.bd_layer5B = null;
     }
       
+}
+
+Stage_01.prototype.setupEncounters = function(){
+    var newSet = new EnemySet();
+    var newData = new SpawnData('enemyChar', 150, "sideSlide", "randomForward", "shot_enemySml", 500, -16, 250, 200, 0);
+    newSet.add(newData);
+    newData = new SpawnData('enemyChar', 150, "sideSlide", "randomForward", "shot_enemySml", 500, 690, 50, 200, 0);
+    newSet.add(newData);
+    
+    this.encounterArray.push(newSet);
+    
+    newSet = new EnemySet();
+    newData = new SpawnData('enemyChar', 150, "sideSlide", "randomForward", "shot_enemySml", 500, -150, 150, 200, 0);
+    newSet.add(newData);
+    newData = new SpawnData('enemyChar', 150, "sideSlide", "randomForward", "shot_enemySml", 500, 750, 50, 200, 0);
+    newSet.add(newData);
+    newData = new SpawnData('enemyCharB', 150, "sideSlide", "randomForward", "shot_enemyMed", 400, 323, -250, -150, 200);
+    newSet.add(newData);
+    
+    this.encounterArray.push(newSet);
+    
+    newSet = new EnemySet();
+    newData = new SpawnData('enemyCharB', 150, "sideSlide", "randomForward", "shot_enemyMed", 400, -150, -250, -150, 200);
+    newSet.add(newData);
+    newData = new SpawnData('enemyCharB', 150, "sideSlide", "randomForward", "shot_enemyMed", 400, 750, -250, -150, 200);
+    newSet.add(newData);
+    newData = new SpawnData('enemyChar', 150, "sideSlide", "randomForward", "shot_enemySml", 400, 750, 85, 200, 0);
+    newSet.add(newData);
+    this.encounterArray.push(newSet);
+    
+    newSet = new EnemySet();
+    newData = new SpawnData('enemyChar', 150, "sideSlide", "randomForward", "shot_enemySml", 400, 750, 125, 200, 0);
+    newSet.add(newData);
+    newSet.add(newData);
+    newData = new SpawnData('enemyChar', 150, "sideSlide", "randomForward", "shot_enemySml", 400, -150, 100, 200, 0);
+    newSet.add(newData);
+    newSet.add(newData);
+    newData = new SpawnData('enemyCharB', 150, "sideSlide", "randomForward", "shot_enemyMed", 400, 323, -250, -150, 200);
+    newSet.add(newData);
+    this.encounterArray.push(newSet);
+    
+    newSet = new EnemySet();
+    newData = new SpawnData('enemyCharB', 150, "sideSlide", "randomForward", "shot_enemyMed", 400, -150, -250, -150, 200);
+    newSet.add(newData);
+    newSet.add(newData);
+    newData = new SpawnData('enemyCharB', 150, "sideSlide", "randomForward", "shot_enemyMed", 400, 750, -250, -150, 200);
+    newSet.add(newData);
+    newSet.add(newData);
+    this.encounterArray.push(newSet);
+    
+    newSet = new EnemySet();
+    newData = new SpawnData('enemyCharC', 150, "sideSlide", "radial", "shot_enemyBasic", 500, -250, 150, -150, 0);
+    newSet.add(newData);
+    this.encounterArray.push(newSet);
+    
+    newSet = new EnemySet();
+    newData = new SpawnData('enemyChar', 150, "sideSlide", "randomForward", "shot_enemySml", 400, 750, 85, 200, 0);
+    newSet.add(newData);
+    newSet.add(newData);
+    newData = new SpawnData('enemyChar', 150, "sideSlide", "randomForward", "shot_enemySml", 400, -150, 115, 200, 0);
+    newSet.add(newData);
+    newSet.add(newData);
+    newData = new SpawnData('enemyCharB', 150, "frenzy", "randomForward", "shot_enemyMed", 400, 323, -250, -150, 200);
+    newSet.add(newData);
+    this.encounterArray.push(newSet);
+    
+    newSet = new EnemySet();
+    newData = new SpawnData('enemyCharB', 150, "sideSlide", "radial", "shot_enemySml", 450, 750, -150, 200, 0);
+    newSet.add(newData);
+    newData = new SpawnData('enemyChar', 150, "sideSlide", "randomForward", "shot_enemyMed", 400, 750, 150, 200, 0);
+    newSet.add(newData);
+    newSet.add(newData);
+    newData = new SpawnData('enemyChar', 150, "sideSlide", "randomForward", "shot_enemyMed", 400, -250, 150, 200, 0);
+    newSet.add(newData);
+    newSet.add(newData);
+    this.encounterArray.push(newSet);
+    
+    newSet = new EnemySet();
+    newData = new SpawnData('enemyCharB', 150, "sideSlide", "radial", "shot_enemySml", 400, 750, 150, 200, 0);
+    newSet.add(newData);
+    newData = new SpawnData('enemyCharB', 150, "sideSlide", "radial", "shot_enemySml", 400, -250, 150, 200, 0);
+    newSet.add(newData);
+    newData = new SpawnData('enemyCharC', 150, "frenzy", "randomForward", "shot_enemyBasic", 250, -250, -150, 200, 0);
+    newSet.add(newData);
+    this.encounterArray.push(newSet);
+    
+    newSet = new EnemySet();
+    newData = new SpawnData('enemyCharB', 150, "sideSlide", "radial", "shot_enemySml", 400, 750, 150, 200, 0);
+    newSet.add(newData);
+    newData = new SpawnData('enemyCharC', 150, "frenzy", "randomForward", "shot_enemyBasic", 250, -250, -150, 200, 0);
+    newSet.add(newData);
+    newData = new SpawnData('enemyCharC', 150, "frenzy", "randomForward", "shot_enemyBasic", 250, 750, -150, 200, 0);
+    newSet.add(newData);
+    this.encounterArray.push(newSet);
+    
+    newSet = new EnemySet();
+    newData = new SpawnData('boss01', 3500, "sideSlide", "radial", "shot_enemyBasic", 1200, 323, -450, 200, 0);
+    newSet.add(newData);
+    newData = new SpawnData('boss01', 3500, "sideSlide", "radial", "shot_enemySml", 600, 323, -450, 200, 0);
+    newSet.add(newData);
+    newData = new SpawnData('boss01', 3500, "sideSlide", "randomForward", "shot_enemyMed", 450, 323, -450, 200, 0);
+    newSet.add(newData);
+    newSet.add(newData);
+    newSet.add(newData);
+    this.encounterArray.push(newSet);
 }
