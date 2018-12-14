@@ -26,6 +26,7 @@ Stage_01.prototype.setup = function(){
     /*this.stageBackdrop = this.game.add.image(360, 452, this.stageBackdropID);
     this.stageBackdrop.depth = 0;*/
     
+    //These are the layers used for the parallax background.
     this.bd_layer1 = this.game.add.image(360, -1606, "bd_lay1");
     this.bd_layer1.depth = -1;
     this.bd_layer2 = this.game.add.image(360, -1606, "bd_lay2");
@@ -53,6 +54,7 @@ Stage_01.prototype.setup = function(){
     this.phaserGroup_enemies.add(newEnemy.phaserObject);
     this.enemyObjArray.push(newEnemy);*/
     
+    //Set up and spawn the first encounter.
     this.setupEncounters();
     this.spawnEncounter();
     
@@ -61,13 +63,13 @@ Stage_01.prototype.setup = function(){
     this.game.screenFilter.frame = 8;
 }
 
-Stage_01.prototype.update = function(){
-    this.update_Enemies();
-    this.moveBackdrop();
-    this.checkLayers();
+Stage_01.prototype.update = function(){ //Update loop for stage 1.
+    this.update_Enemies(); //1. Update Enemy AI
+    this.moveBackdrop(); //2. Move the background
+    this.checkLayers(); //3. Check to see if the background needs to be looped.
 }
 
-Stage_01.prototype.update_Enemies = function(){
+Stage_01.prototype.update_Enemies = function(){ //Update the enemy AI by going through all the enemies in the stage and individually have them behave accordingly.
     for(var i = 0; i < this.enemyObjArray.length; i += 1){
         this.enemyObjArray[i].update();
         if(this.enemyObjArray[i].health <= 0){
@@ -78,7 +80,8 @@ Stage_01.prototype.update_Enemies = function(){
             this.enemyObjArray.pop();
         }
     }
-    if(this.enemyObjArray.length == 0){
+    if(this.enemyObjArray.length == 0){ //If there are no more enemies then spawn the next encounter/enemy set.
+        
         /*var newEnemy = new Enemy(this.game, 150, 'enemyChar',"sideSlide", "randomForward");
         newEnemy.setup(-16, 250, -150, 200);
         this.phaserGroup_enemies.add(newEnemy.phaserObject);
@@ -103,7 +106,7 @@ Stage_01.prototype.update_Enemies = function(){
     }
 }
 
-Stage_01.prototype.spawnEncounter = function(){
+Stage_01.prototype.spawnEncounter = function(){ //Spawn the encounter we're currently on.
     for(var i = 0; i < this.encounterArray[this.curEncounter].setArray.length; i += 1){
         var newEnemy = new Enemy(this.game, this.encounterArray[this.curEncounter].setArray[i].health, this.encounterArray[this.curEncounter].setArray[i].spriteID,this.encounterArray[this.curEncounter].setArray[i].movePattern, this.encounterArray[this.curEncounter].setArray[i].bulletPattern, this.encounterArray[this.curEncounter].setArray[i].bulletType, this.encounterArray[this.curEncounter].setArray[i].fireRate);
         newEnemy.setup(this.encounterArray[this.curEncounter].setArray[i].initXLoc, this.encounterArray[this.curEncounter].setArray[i].initYLoc, this.encounterArray[this.curEncounter].setArray[i].xVel, this.encounterArray[this.curEncounter].setArray[i].yVel);
@@ -114,7 +117,7 @@ Stage_01.prototype.spawnEncounter = function(){
     }
 }
 
-Stage_01.prototype.moveBackdrop = function(){
+Stage_01.prototype.moveBackdrop = function(){ //This is in charge of moving each layer to provide some parallax.
     this.bd_layer1.y += 0.5*10;
     this.bd_layer2.y += 0.48*10;
     this.bd_layer3.y += 0.4*10;
@@ -138,7 +141,7 @@ Stage_01.prototype.moveBackdrop = function(){
     }
 }
 
-Stage_01.prototype.checkLayers = function(){
+Stage_01.prototype.checkLayers = function(){ //This checks each layer, and "loops" them by making a duplicate of the image on top of the screen and getting rid of the non-duplicate as soon as it goes beyond the bottom of the screen.
    if(this.bd_layer1.y >= 2520 && this.bd_layer1B == null){
         this.bd_layer1B = this.game.add.image(360, -2474, "bd_lay1");
         this.bd_layer1B.depth = -1;
@@ -191,7 +194,8 @@ Stage_01.prototype.checkLayers = function(){
       
 }
 
-Stage_01.prototype.setupEncounters = function(){
+Stage_01.prototype.setupEncounters = function(){ 
+    //This function is in charge of setting up all the encounters and everything that is spawned within this stage.
     var newSet = new EnemySet();
     var newData = new SpawnData('enemyChar', 150, "sideSlide", "randomForward", "shot_enemySml", 500, -16, 250, 200, 0);
     newSet.add(newData);

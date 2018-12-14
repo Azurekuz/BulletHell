@@ -1,23 +1,23 @@
-function ControlScheme(context){
+function ControlScheme(context){ //This object stores all usable control keys.
     this.game = context;
-    this.game.controls = this.game.input;
-    this.moveUp;
-    this.moveLeft;
-    this.moveDown;
-    this.moveRight;
-    this.focusShot;
-    this.shootA;
-    this.shootB;
+    this.game.controls = this.game.input; //This stores the Phaser control input variable.
+    this.moveUp; //Placeholder variable for the control key responsible for moving up
+    this.moveLeft; //Placeholder variable for the control key responsible for moving left
+    this.moveDown; //Placeholder variable for the control key responsible for moving down
+    this.moveRight; //Placeholder variable for the control key responsible for moving right
+    this.focusShot; //Placeholder variable for the control key responsible for focusing/slowing down.
+    this.shootA; //Placeholder variable for the control key for attacking.
+    this.shootB; //Placeholder variable for an alternate control key for attacking.
     
-    this.switchShotLeft_A;
-    this.switchShotLeft_B;
-    this.switchShotRight_A;
-    this.switchShotRight_B;    
+    this.switchShotLeft_A; //Key to go to the previous attack type
+    this.switchShotLeft_B; //Key to go to the next attack type
+    this.switchShotRight_A; //Alternate key to go to the previous attack type
+    this.switchShotRight_B; //Alternate key to go to the next attack type  
     
-    this.arrowControls;
+    this.arrowControls; //This stores haser's arrow key controls.
 }
 
-ControlScheme.prototype.setup = function(){
+ControlScheme.prototype.setup = function(){ //Set up the actual control keys by defining them.
     /* 
         Movement controls for both WASD and arrow control schemes.
     */
@@ -63,7 +63,7 @@ ControlScheme.prototype.setup = function(){
 
 
 /*
-    These are the functions that are called, in order to check for both of the control schemes.
+    These are the functions that are called, in order to check for both of the control schemes. They return booleans as expected, if pressed return TRUE, otherwise return FALSE.
 */
 
 ControlScheme.prototype.isMoveUp = function(){
